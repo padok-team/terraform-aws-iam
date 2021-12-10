@@ -9,19 +9,19 @@ provider "aws" {
 }
 
 module "iam" {
-    source = "../../"
-    roles = { 
-      "bonjour" = { 
-          "assumePrincipal": "banane", 
-          "policies_name": ["s3_full_access_test", "s4_full_access_test"]
-        }, 
-      "hello" = {
-          "assumePrincipal": "lapin",
-          "policies_name": []
-        }
-      }
+  source = "../../"
+  roles = {
+    "bonjour" = {
+      "assumePrincipal" : "banane",
+      "policies_name" : ["s3_full_access_test", "s4_full_access_test"]
+    },
+    "hello" = {
+      "assumePrincipal" : "lapin",
+      "policies_name" : []
+    }
+  }
 
-    policies = {
+  policies = {
     "s3_full_access_test" = <<EOF
 {
     "Version": "2012-10-17",
