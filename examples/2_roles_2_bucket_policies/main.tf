@@ -10,7 +10,16 @@ provider "aws" {
 
 module "iam" {
     source = "../../"
-    roles= []
+    roles = {
+        "bonjour" = {
+        "assumePrincipal" : "banane",
+        "policies_name" : ["s3_read_only", "s3_admin"]
+        },
+        "hello" = {
+        "assumePrincipal" : "lapin",
+        "policies_name" : []
+        }
+    }
     policies = {
     "s3_read_only" = <<EOF
 {

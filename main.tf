@@ -1,8 +1,8 @@
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_role" "this" {
-    for_each = toset(var.roles)
-    name = each.value["name"]
+    for_each = var.roles
+    name = each.key
     assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -23,25 +23,26 @@ resource "aws_iam_policy" "this" {
     policy = each.value
 }
 
-locals {
-  # flatten ensures that this local value is a flat list of objects, rather
-  # than a list of lists of objects.
+locals { 
   mapping_policies_roles = flatten([
-    for role, role_elements in toset(var.roles) : [
+    for role, role_elements in var.roles : [
       for policy in role_elements["policies_name"] : {
-        role   = role_elements["role_name"]
+        role   = role
         policy = policy
       }
     ]
   ])
 }
 
-### Attaching policies to role
+## Attaching policies to role
 resource "aws_iam_role_policy_attachment" "this" {
-  count      = length(local.mapping_policies_roles)
+  for_each = { for attachment in local.mapping_policies_roles:  
+    "${attachment["role"]}_${attachment["policy"]}" => {"role": attachment["role"], "policy": attachment["policy"]}
+    }
 
-  role       = local.mapping_policies_roles[count.index]["role"]
-  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.mapping_policies_roles[count.index]["policy"]}"
+
+  role       = each.value["role"]
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${each.value["policy"]}"
 
   depends_on = [aws_iam_role.this]
 }
