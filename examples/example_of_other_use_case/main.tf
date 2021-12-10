@@ -12,12 +12,14 @@ module "iam" {
   source = "../../"
   roles = {
     "bonjour" = {
-      "assumePrincipal" : "banane",
-      "policies_name" : ["s3_full_access_test", "s4_full_access_test"]
+      "assumePrincipal" = "banane",
+      "customPolicies" = ["s3_full_access_test", "s4_full_access_test"],
+      "awsManagedPolicies" = ["AdministratorAccess"]
     },
     "hello" = {
-      "assumePrincipal" : "lapin",
-      "policies_name" : []
+      "assumePrincipal" = "lapin",
+      "customPolicies" = [],
+      "awsManagedPolicies" = []
     }
   }
 

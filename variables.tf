@@ -1,7 +1,8 @@
 variable "roles" {
   type        = map(object({
     assumePrincipal = string
-    policies_name = list(string)
+    customPolicies = list(string)
+    awsManagedPolicies = list(string)
     }))
   description = "List of the roles to create"
 }
