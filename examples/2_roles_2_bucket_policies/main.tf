@@ -11,13 +11,13 @@ provider "aws" {
 module "iam" {
     source = "../../"
     roles = {
-        "bonjour" = {
-        "assumePrincipal" : "banane",
-        "policies_name" : ["s3_read_only", "s3_admin"]
+        "ec2_reader" = {
+            "assumePrincipal" : "{\"Service\": \"ec2.amazonaws.com\"}",
+            "policies_name" : ["s3_read_only"]
         },
-        "hello" = {
-        "assumePrincipal" : "lapin",
-        "policies_name" : []
+        "lambda_writer" = {
+            "assumePrincipal" : "{\"Service\": \"lambda.amazonaws.com\"}",
+            "policies_name" : ["s3_admin"]
         }
     }
     policies = {

@@ -3,17 +3,7 @@ data "aws_caller_identity" "current" {}
 resource "aws_iam_role" "this" {
     for_each = var.roles
     name = each.key
-    assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = each.value["assumePrincipal"]
-      },
-    ]
-     })
+    assume_role_policy = templatefile("${path.module}/assume_policy.tpl", {principalsRole = each.value["assumePrincipal"]})
 }
 
 resource "aws_iam_policy" "this" {
