@@ -12,8 +12,8 @@ module "iam" {
     source = "../../"
     roles = {
         "adminS3" = {
-        "assumePrincipal" : "root",
-        "customPolicies" : ["existingPolicy"],
+        "assumePrincipal" : "{\"AWS\": \"arn:aws:iam::334033969502:role/lambda_writer\"}",
+        "customPolicies" : ["s3_read_only"],
         "awsManagedPolicies": ["AmazonS3FullAccess"]
         },
     }
