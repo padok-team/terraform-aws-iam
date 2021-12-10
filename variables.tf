@@ -1,6 +1,5 @@
 variable "roles" {
-  type        = list(object({
-    role_name = string
+  type        = map(object({
     assumePrincipal = string
     policies_name = list(string)
     }))
