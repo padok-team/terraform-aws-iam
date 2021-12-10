@@ -7,45 +7,25 @@ provider "aws" {
     }
   }
 }
+
 module "iam" {
     source = "../../"
     roles= []
-    policies = [{"name": "toto",
-    "policy": <<EOT
-    "{
+    policies = {
+    "s3_full_access_test" = <<EOF
+{
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "ListAndDescribe",
             "Effect": "Allow",
             "Action": [
-                "dynamodb:List*",
-                "dynamodb:DescribeReservedCapacity*",
-                "dynamodb:DescribeLimits",
-                "dynamodb:DescribeTimeToLive"
+                "s3:*",
+                "s3-object-lambda:*"
             ],
             "Resource": "*"
-        },
-        {
-            "Sid": "SpecificTable",
-            "Effect": "Allow",
-            "Action": [
-                "dynamodb:BatchGet*",
-                "dynamodb:DescribeStream",
-                "dynamodb:DescribeTable",
-                "dynamodb:Get*",
-                "dynamodb:Query",
-                "dynamodb:Scan",
-                "dynamodb:BatchWrite*",
-                "dynamodb:CreateTable",
-                "dynamodb:Delete*",
-                "dynamodb:Update*",
-                "dynamodb:PutItem"
-            ],
-            "Resource": "arn:aws:dynamodb:*:*:table/MyTable"
         }
     ]
-}"
-EOT
-}]
+}
+EOF
+  }
 }

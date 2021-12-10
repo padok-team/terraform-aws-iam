@@ -1,10 +1,3 @@
-# Here you can reference 2 type of terraform objects :
-# 1. Ressources from you provider of choice
-# 2. Modules from official repositories which include modules from the following github organizations
-#     - AWS: https://github.com/terraform-aws-modules
-#     - GCP: https://github.com/terraform-google-modules
-#     - Azure: https://github.com/Azure
-
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_role" "this" {
@@ -24,10 +17,10 @@ resource "aws_iam_role" "this" {
 }
 
 resource "aws_iam_policy" "this" {
-    for_each = toset(var.policies)
+    for_each = var.policies
 
-    name = each.value["name"]
-    policy = each.value["policy"]
+    name = each.key
+    policy = each.value
 }
 
 locals {
@@ -52,5 +45,3 @@ resource "aws_iam_role_policy_attachment" "this" {
 
   depends_on = [aws_iam_role.this]
 }
-
-

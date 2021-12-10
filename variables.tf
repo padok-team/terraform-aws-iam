@@ -8,10 +8,7 @@ variable "roles" {
 }
 
 variable "policies" {
-  type = list(object({
-    name = string
-    policy = string
-  }))
-  description = "List of the policies to create"
+  type = map(string)
+  description = "List of the policies to create with format 'policy name' = 'policy'"
 }
 
