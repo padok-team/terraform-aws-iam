@@ -13,11 +13,13 @@ module "iam" {
     roles = {
         "ec2_reader" = {
             "assumePrincipal" : "{\"Service\": \"ec2.amazonaws.com\"}",
-            "policies_name" : ["s3_read_only"]
+            "customPolicies" : ["s3_read_only"],
+            "awsManagedPolicies" : []
         },
         "lambda_writer" = {
             "assumePrincipal" : "{\"Service\": \"lambda.amazonaws.com\"}",
-            "policies_name" : ["s3_admin"]
+            "customPolicies" : ["s3_admin"],
+            "awsManagedPolicies" : []
         }
     }
     policies = {
