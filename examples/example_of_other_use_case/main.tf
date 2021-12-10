@@ -10,7 +10,19 @@ provider "aws" {
 
 module "iam" {
     source = "../../"
-    roles = { "bonjour" : { "assumePrincipal": "banane", "policies_name": ["s3_full_access_test", "s4_full_access_test"]}, "hello": {"assumePrincipal": "lapin", "policies_name": []}}
+    roles = { 
+      "bonjour" : 
+        { 
+          "assumePrincipal": "banane", 
+          "policies_name": ["s3_full_access_test", "s4_full_access_test"]
+        }, 
+      "hello": 
+        {
+          "assumePrincipal": "lapin",
+          "policies_name": []
+        }
+      }
+
     policies = {
     "s3_full_access_test" = <<EOF
 {
