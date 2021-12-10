@@ -1,4 +1,5 @@
 variable "roles" {
+  default = {}
   type        = map(object({
     assumePrincipal = string
     customPolicies = list(string)
@@ -8,6 +9,7 @@ variable "roles" {
 }
 
 variable "policies" {
+  default = {}
   type = map(string)
   description = "List of the policies to create with format 'policy name' = 'policy'"
 }
