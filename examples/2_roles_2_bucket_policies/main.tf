@@ -9,20 +9,20 @@ provider "aws" {
 }
 
 module "iam" {
-    source = "../../"
-    roles = {
-        "ec2_reader" = {
-            "assumePrincipal" : "{\"Service\": \"ec2.amazonaws.com\"}",
-            "customPolicies" : ["s3_read_only"],
-            "awsManagedPolicies" : []
-        },
-        "lambda_writer" = {
-            "assumePrincipal" : "{\"Service\": \"lambda.amazonaws.com\"}",
-            "customPolicies" : ["s3_admin"],
-            "awsManagedPolicies" : []
-        }
+  source = "../../"
+  roles = {
+    "ec2_reader" = {
+      "assumePrincipal" : "{\"Service\": \"ec2.amazonaws.com\"}",
+      "customPolicies" : ["s3_read_only"],
+      "awsManagedPolicies" : []
+    },
+    "lambda_writer" = {
+      "assumePrincipal" : "{\"Service\": \"lambda.amazonaws.com\"}",
+      "customPolicies" : ["s3_admin"],
+      "awsManagedPolicies" : []
     }
-    policies = {
+  }
+  policies = {
     "s3_read_only" = <<EOF
 {
     "Version": "2012-10-17",
@@ -55,7 +55,7 @@ module "iam" {
     ]
 }
 EOF
-    "s3_admin" = <<EOF
+    "s3_admin"     = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [

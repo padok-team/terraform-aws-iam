@@ -1,19 +1,19 @@
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_role" "this" {
-    for_each = var.roles
-    name = each.key
-    assume_role_policy = templatefile("${path.module}/assume_policy.tpl", {principalsRole = each.value["assumePrincipal"]})
+  for_each           = var.roles
+  name               = each.key
+  assume_role_policy = templatefile("${path.module}/assume_policy.tpl", { principalsRole = each.value["assumePrincipal"] })
 }
 
 resource "aws_iam_policy" "this" {
-    for_each = var.policies
+  for_each = var.policies
 
-    name = each.key
-    policy = each.value
+  name   = each.key
+  policy = each.value
 }
 
-locals { 
+locals {
   mapping_policies_roles = flatten([
     for role, role_elements in var.roles : [
       for policy in role_elements["customPolicies"] : {
@@ -26,9 +26,9 @@ locals {
 
 ## Attaching policies to role
 resource "aws_iam_role_policy_attachment" "custom" {
-  for_each = { for attachment in local.mapping_policies_roles:  
-    "${attachment["role"]}_${attachment["policy"]}" => {"role": attachment["role"], "policy": attachment["policy"]}
-    }
+  for_each = { for attachment in local.mapping_policies_roles :
+    "${attachment["role"]}_${attachment["policy"]}" => { "role" : attachment["role"], "policy" : attachment["policy"] }
+  }
 
 
   role       = each.value["role"]
@@ -37,7 +37,7 @@ resource "aws_iam_role_policy_attachment" "custom" {
   depends_on = [aws_iam_role.this]
 }
 
-locals { 
+locals {
   mapping_aws_policies_roles = flatten([
     for role, role_elements in var.roles : [
       for policy in role_elements["awsManagedPolicies"] : {
@@ -50,13 +50,14 @@ locals {
 
 ## Attaching AWS Managed policies to role
 resource "aws_iam_role_policy_attachment" "aws_managed" {
-  for_each = { for attachment in local.mapping_aws_policies_roles:  
-    "${attachment["role"]}_${attachment["policy"]}" => {"role": attachment["role"], "policy": attachment["policy"]}
-    }
+
+  for_each = { for attachment in local.mapping_aws_policies_roles :
+    "${attachment["role"]}_${attachment["policy"]}" => { "role" : attachment["role"], "policy" : attachment["policy"] }
+  }
 
 
   role       = each.value["role"]
-  policy_arn = "arn:aws:iam::policy/${each.value["policy"]}"
+  policy_arn = "arn:aws:iam::aws:policy/${each.value["policy"]}"
 
   depends_on = [aws_iam_role.this]
 }
