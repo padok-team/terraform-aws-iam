@@ -34,7 +34,7 @@ resource "aws_iam_role_policy_attachment" "custom" {
   role       = each.value["role"]
   policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${each.value["policy"]}"
 
-  depends_on = [aws_iam_role.this]
+  depends_on = [aws_iam_role.this, aws_iam_policy.this]
 }
 
 locals {
@@ -59,5 +59,5 @@ resource "aws_iam_role_policy_attachment" "aws_managed" {
   role       = each.value["role"]
   policy_arn = "arn:aws:iam::aws:policy/${each.value["policy"]}"
 
-  depends_on = [aws_iam_role.this]
+  depends_on = [aws_iam_role.this, aws_iam_policy.this]
 }
