@@ -5,13 +5,13 @@
       "Action": "sts:AssumeRole",
       "Principal": ${principalsRole},
       "Effect": "Allow",
-      "Sid": ""
+      "Sid": "AssumeRole"
     },
     {
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Principal": ${principalsRole},
       "Effect": "Allow",
-      "Sid": ""
+      "Sid": "AssumeRoleWithWebIdentity"
     }
   ]
 }
