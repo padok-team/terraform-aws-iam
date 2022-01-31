@@ -1,20 +1,15 @@
-variable "example_of_required_variable" {
-  type        = string
-  description = "Short description of the variable"
+variable "roles" {
+  description = "List of the roles to create, for each role you must specify the assume principal, and the policies to bind to it (AWS Managed or custom policies)"
+  type = map(object({
+    assumePrincipal    = string
+    customPolicies     = list(string)
+    awsManagedPolicies = list(string)
+  }))
+  default = {}
 }
 
-variable "example_of_variable_with_default_value" {
-  type        = string
-  description = "Short description of the variable"
-  default     = "default_value"
-}
-
-variable "example_with_validation" {
-  type        = list(string)
-  description = "Short description of the variable"
-
-  validation {
-    condition     = length(var.example_with_validation) >= 2
-    error_message = "Error message which explains what's required and finished with a dot ."
-  }
+variable "policies" {
+  description = "Map of the policies to create with format {'policy name' = 'policy'}"
+  type        = map(string)
+  default     = {}
 }
