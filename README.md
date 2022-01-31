@@ -105,11 +105,11 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_policies"></a> [policies](#input\_policies) | Map of the policies to create with format {'policy name' = 'policy'} | `map(string)` | `{}` | no |
-| <a name="input_roles"></a> [roles](#input\_roles) | List of the roles to create, for each role you must specify the assume principal, and the policies to bind to it (AWS Managed or custom policies) | <pre>map(object({<br>    assumePrincipal = string<br>    customPolicies = list(string)<br>    awsManagedPolicies = list(string)<br>    }))</pre> | `{}` | no |
+| <a name="input_roles"></a> [roles](#input\_roles) | List of the roles to create, for each role you must specify the assume principal, and the policies to bind to it (AWS Managed or custom policies) | <pre>map(object({<br>    assumePrincipal    = string<br>    customPolicies     = list(string)<br>    awsManagedPolicies = list(string)<br>  }))</pre> | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_role_arns"></a> [role\_arns](#output\_role\_arns) | Arns of the roles created by the module, format is a map {'role\_name': 'role\_arn'} |
+| <a name="output_iam_roles"></a> [iam\_roles](#output\_iam\_roles) | Arns of the roles created by the module, format is a map {'role\_name': 'role\_arn'} |
 <!-- END_TF_DOCS -->
