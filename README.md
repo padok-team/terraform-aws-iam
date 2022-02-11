@@ -11,7 +11,7 @@ Terraform module which creates **IAM** resources (roles and policies) on **AWS**
 
 ```hcl
 module "iam" {
-    source = "../../"
+    source = "https://github.com:padok-team/terraform-aws-iam"
     roles = {
         "ec2_reader" = {
             "assumePrincipal" : "{\"Service\": \"ec2.amazonaws.com\"}",
