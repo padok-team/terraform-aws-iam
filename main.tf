@@ -4,7 +4,7 @@ resource "aws_iam_role" "this" {
   for_each = var.roles
 
   name               = each.key
-  assume_role_policy = templatefile("${path.module}/assume_policy.tpl", { principalsRole = each.value["assumePrincipal"] })
+  assume_role_policy = templatefile("${path.module}/assume_policy${each.value["condition"]}.tftpl", { principalsRole = each.value["assumePrincipal"], condition_statement = each.value["condition_statement"] })
 }
 
 resource "aws_iam_policy" "this" {
