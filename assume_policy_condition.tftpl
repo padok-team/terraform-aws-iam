@@ -5,13 +5,14 @@
       "Action": "sts:AssumeRole",
       "Principal": ${principalsRole},
       "Effect": "Allow",
-      "Sid": "AssumeRole"
+      "Sid": "AssumeRole",
     },
     {
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Principal": ${principalsRole},
       "Effect": "Allow",
-      "Sid": "AssumeRoleWithWebIdentity"
+      "Sid": "AssumeRoleWithWebIdentity",
+      "Condition": { "${condition_operator}" : { "${condition_key}" : "${condition_value}" }}
     }
   ]
 }
