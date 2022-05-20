@@ -1,61 +1,31 @@
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_role" "this" {
-  for_each = var.roles
+  name = var.name
 
-  name               = each.key
-  assume_role_policy = templatefile("${path.module}/assume_policy.tpl", { principalsRole = each.value["assumePrincipal"] })
+  assume_role_policy = templatefile("${path.module}/assume_policy.tpl", { principals = var.principal })
 }
 
 resource "aws_iam_policy" "this" {
-  for_each = var.policies
+  count = var.policy == null ? 0 : 1
 
-  name   = each.key
-  policy = each.value
+  name        = "${var.name}_policy"
+  path        = "/"
+  description = "A policy for role ${var.name}"
+  policy      = var.policy
 }
 
-locals {
-  mapping_policies_roles = flatten([
-    for role, role_elements in var.roles : [
-      for policy in role_elements["customPolicies"] : {
-        role   = role
-        policy = policy
-      }
-    ]
-  ])
-}
+resource "aws_iam_role_policy_attachment" "this" {
+  count = var.policy == null ? 0 : 1
 
-## Attaching policies to role
-resource "aws_iam_role_policy_attachment" "custom" {
-  for_each = { for attachment in local.mapping_policies_roles :
-    "${attachment["role"]}_${attachment["policy"]}" => { "role" : attachment["role"], "policy" : attachment["policy"] }
-  }
-
-  role       = each.value["role"]
-  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${each.value["policy"]}"
-
-  depends_on = [aws_iam_role.this, aws_iam_policy.this]
-}
-
-locals {
-  mapping_aws_policies_roles = flatten([
-    for role, role_elements in var.roles : [
-      for policy in role_elements["awsManagedPolicies"] : {
-        role   = role
-        policy = policy
-      }
-    ]
-  ])
+  role       = aws_iam_role.this.name
+  policy_arn = aws_iam_policy.this[0].arn
 }
 
 ## Attaching AWS Managed policies to role
-resource "aws_iam_role_policy_attachment" "aws_managed" {
-  for_each = { for attachment in local.mapping_aws_policies_roles :
-    "${attachment["role"]}_${attachment["policy"]}" => { "role" : attachment["role"], "policy" : attachment["policy"] }
-  }
+resource "aws_iam_role_policy_attachment" "managed" {
+  for_each = toset(var.managed_policies)
 
-  role       = each.value["role"]
-  policy_arn = "arn:aws:iam::aws:policy/${each.value["policy"]}"
-
-  depends_on = [aws_iam_role.this, aws_iam_policy.this]
+  role       = aws_iam_role.this.name
+  policy_arn = "arn:aws:iam::aws:policy/${each.key}"
 }

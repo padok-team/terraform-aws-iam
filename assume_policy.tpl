@@ -3,15 +3,9 @@
   "Statement": [
     {
       "Action": "sts:AssumeRole",
-      "Principal": ${principalsRole},
+      "Principal": ${principals},
       "Effect": "Allow",
       "Sid": "AssumeRole"
-    },
-    {
-      "Action": "sts:AssumeRoleWithWebIdentity",
-      "Principal": ${principalsRole},
-      "Effect": "Allow",
-      "Sid": "AssumeRoleWithWebIdentity"
     }
   ]
 }

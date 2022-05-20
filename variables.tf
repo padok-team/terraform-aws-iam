@@ -1,15 +1,20 @@
-variable "roles" {
-  description = "List of the roles to create, for each role you must specify the assume principal, and the policies to bind to it (AWS Managed or custom policies)"
-  type = map(object({
-    assumePrincipal    = string
-    customPolicies     = list(string)
-    awsManagedPolicies = list(string)
-  }))
-  default = {}
+variable "name" {
+  description = "The role to create"
+  type        = string
 }
 
-variable "policies" {
-  description = "Map of the policies to create with format {'policy name' = 'policy'}"
-  type        = map(string)
-  default     = {}
+variable "principal" {
+  description = "The principal to assume"
+  type        = string
+}
+
+variable "managed_policies" {
+  description = "List of the managed policies to attach to the role"
+  type        = list(string)
+  default     = []
+}
+variable "policy" {
+  description = "The policy to create"
+  type        = string
+  default     = null
 }

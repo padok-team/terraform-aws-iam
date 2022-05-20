@@ -4,96 +4,48 @@ Terraform module which creates **IAM** resources (roles and policies) on **AWS**
 
 ## User Stories for this module
 
-- AAOps I can create roles and attach existing policies to them
-- AAOps I can create roles and attach new policies to them
+- AAOps I can create a role with a custom policy and managed policies
+- AAOps I can create a role only with a managed AWS IAM policy
 
 ## Usage
 
 ```hcl
-module "iam" {
-    source = "https://github.com:padok-team/terraform-aws-iam"
-    roles = {
-        "ec2_reader" = {
-            "assumePrincipal" : "{\"Service\": \"ec2.amazonaws.com\"}",
-            "customPolicies" : ["s3_read_only"],
-            "awsManagedPolicies" : []
-        },
-        "lambda_writer" = {
-            "assumePrincipal" : "{\"Service\": \"lambda.amazonaws.com\"}",
-            "customPolicies" : ["s3_admin"],
-            "awsManagedPolicies" : []
-        }
-    }
-    policies = {
-    "s3_read_only" = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "AllowReadOnAllBucket",
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject",
-                "s3:GetObjectTagging",
-                "s3:ListBucket",
-                "s3:GetBucketAcl",
-                "s3:ListBucketMultipartUploads",
-                "s3:GetBucketLocation"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "kms:Decrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-                "kms:DescribeKey"
-            ],
-            "Resource": [
-                "*"
-            ]
-        }
-    ]
+module "my_role" {
+  source = "../../"
+
+    name = "my_role"
+
+    principal = jsonencode({
+        "Service": ["ec2.amazonaws.com", "lambda.amazonaws.com" ]
+    })
+
+    # Aws Managed Policies
+    managed_policies = ["AmazonS3FullAccess"]
+
+    policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+            {
+                Action = [
+                "ec2:Describe*",
+                ]
+                Effect   = "Allow"
+                Resource = "*"
+            },
+        ]
+    })
 }
-EOF
-    "s3_admin" = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "AllowAllOnAllBucket",
-            "Effect": "Allow",
-            "Action": [
-                "s3:*",
-                "s3-object-lambda:*"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "kms:Encrypt",
-                "kms:Decrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-                "kms:DescribeKey"
-            ],
-            "Resource": [
-                "*"
-            ]
-        }
-    ]
-}
-EOF
-  }
+
+output "role_arn" {
+  value = module.my_role.this.arn
 }
 ```
 
 ## Examples
 
-- [I can create a role and attach existing policies (AWS managed or not) to it](examples/1_role_aws_and_existing_policies/main.tf)
-- [I can create 2 roles and 2 policies and attach one policy to each role](examples/2_roles_2_bucket_policies/main.tf)
+- [I can create a role and attach existing policies (AWS managed or not) to it](examples/basic/main.tf)
+- [I can create many roles with custom policies and different principales](examples/multiple_roles/main.tf)
+- [I can create a role with only a managed policies](examples/only_managed_policy/main.tf)
 
 <!-- BEGIN_TF_DOCS -->
 ## Modules
@@ -104,14 +56,16 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_policies"></a> [policies](#input\_policies) | Map of the policies to create with format {'policy name' = 'policy'} | `map(string)` | `{}` | no |
-| <a name="input_roles"></a> [roles](#input\_roles) | List of the roles to create, for each role you must specify the assume principal, and the policies to bind to it (AWS Managed or custom policies) | <pre>map(object({<br>    assumePrincipal    = string<br>    customPolicies     = list(string)<br>    awsManagedPolicies = list(string)<br>  }))</pre> | `{}` | no |
+| <a name="input_name"></a> [name](#input\_name) | The role to create | `string` | n/a | yes |
+| <a name="input_principal"></a> [principal](#input\_principal) | The principal to assume | `string` | n/a | yes |
+| <a name="input_managed_policies"></a> [managed\_policies](#input\_managed\_policies) | List of the managed policies to attach to the role | `list(string)` | `[]` | no |
+| <a name="input_policy"></a> [policy](#input\_policy) | The policy to create | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_iam_roles"></a> [iam\_roles](#output\_iam\_roles) | Arns of the roles created by the module, format is a map {'role\_name': 'role\_arn'} |
+| <a name="output_this"></a> [this](#output\_this) | The role created by the module |
 <!-- END_TF_DOCS -->
 
 ## License
