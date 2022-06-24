@@ -1,0 +1,8 @@
+---
+site_name: terraform-aws-iam
+
+repo_name: padok-team/terraform-aws-iam
+repo_url: https://github.com/padok-team/terraform-aws-iam
+
+plugins:
+  - techdocs-core
