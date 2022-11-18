@@ -34,8 +34,18 @@ module "my_role" {
 
   name = "my_role"
 
-  principal = jsonencode({
-    "Service" : ["ec2.amazonaws.com", "lambda.amazonaws.com"]
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
   })
 
   # Aws Managed Policies
@@ -55,14 +65,28 @@ module "my_role" {
   })
 }
 
+output "role_arn" {
+  value = module.my_role.this.arn
+}
+
 module "another_role" {
   source = "../../"
 
   name        = "another_role"
   description = "This role allow someone to do something"
 
-  principal = jsonencode({
-    "Service" : ["ec2.amazonaws.com", "lambda.amazonaws.com"]
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = ["ec2.amazonaws.com", "lambda.amazonaws.com"]
+        }
+      },
+    ]
   })
 
   # Aws Managed Policies
@@ -83,6 +107,6 @@ module "another_role" {
   policy_description = "This policy is used by another_role to do something"
 }
 
-output "role_arn" {
-  value = module.my_role.this.arn
+output "another_role" {
+  value = module.another_role.this.arn
 }

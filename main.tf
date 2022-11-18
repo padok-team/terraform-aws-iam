@@ -4,7 +4,7 @@ resource "aws_iam_role" "this" {
   name        = var.name
   description = var.description == null ? var.name : var.description
 
-  assume_role_policy = templatefile("${path.module}/assume_policy.tpl", { principals = var.principal })
+  assume_role_policy = var.assume_role_policy
 }
 
 resource "aws_iam_policy" "this" {
