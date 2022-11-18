@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/padok-team/terraform-aws-iam/compare/v0.3.0...v0.4.0) (2022-11-18)
+
+
+### Features
+
+* rework to allow custom assume role to cover all use cases ([c59f291](https://github.com/padok-team/terraform-aws-iam/commit/c59f2910f86985142acd5882518f7944cd088871))
+
 ## [0.3.0](https://github.com/padok-team/terraform-aws-iam/compare/v0.2.0...v0.3.0) (2022-11-18)
 
 
