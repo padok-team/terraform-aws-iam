@@ -55,6 +55,34 @@ module "my_role" {
   })
 }
 
+module "another_role" {
+  source = "../../"
+
+  name        = "another_role"
+  description = "This role allow someone to do something"
+
+  principal = jsonencode({
+    "Service" : ["ec2.amazonaws.com", "lambda.amazonaws.com"]
+  })
+
+  # Aws Managed Policies
+  managed_policies = ["AmazonS3FullAccess"]
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ec2:Describe*",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+  policy_description = "This policy is used by another_role to do something"
+}
+
 output "role_arn" {
   value = module.my_role.this.arn
 }
