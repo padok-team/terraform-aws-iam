@@ -58,8 +58,10 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | The role to create | `string` | n/a | yes |
 | <a name="input_principal"></a> [principal](#input\_principal) | The principal to assume | `string` | n/a | yes |
+| <a name="input_description"></a> [description](#input\_description) | A description for the role | `string` | `null` | no |
 | <a name="input_managed_policies"></a> [managed\_policies](#input\_managed\_policies) | List of the managed policies to attach to the role | `list(string)` | `[]` | no |
 | <a name="input_policy"></a> [policy](#input\_policy) | The policy to create | `string` | `null` | no |
+| <a name="input_policy_description"></a> [policy\_description](#input\_policy\_description) | A description for the policy | `string` | `null` | no |
 
 ## Outputs
 

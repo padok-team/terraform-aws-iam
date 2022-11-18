@@ -1,7 +1,8 @@
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_role" "this" {
-  name = var.name
+  name        = var.name
+  description = var.description == null ? var.name : var.description
 
   assume_role_policy = templatefile("${path.module}/assume_policy.tpl", { principals = var.principal })
 }
@@ -11,7 +12,7 @@ resource "aws_iam_policy" "this" {
 
   name        = "${var.name}_policy"
   path        = "/"
-  description = "A policy for role ${var.name}"
+  description = var.policy_description == null ? "A policy for role ${var.name}" : var.policy_description
   policy      = var.policy
 }
 
