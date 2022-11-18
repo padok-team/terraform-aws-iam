@@ -9,11 +9,6 @@ variable "description" {
   default     = null
 }
 
-variable "principal" {
-  description = "The principal to assume"
-  type        = string
-}
-
 variable "managed_policies" {
   description = "List of the managed policies to attach to the role"
   type        = list(string)
@@ -30,4 +25,8 @@ variable "policy_description" {
   description = "A description for the policy"
   type        = string
   default     = null
+}
+
+variable "assume_role_policy" {
+  type = string
 }

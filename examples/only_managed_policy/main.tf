@@ -34,8 +34,18 @@ module "my_role" {
 
   name = "my_role"
 
-  principal = jsonencode({
-    "Service" : ["ec2.amazonaws.com", "lambda.amazonaws.com"]
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = ["ec2.amazonaws.com", "lambda.amazonaws.com"]
+        }
+      },
+    ]
   })
 
   # Aws Managed Policies

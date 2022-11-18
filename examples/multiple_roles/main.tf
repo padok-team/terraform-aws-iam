@@ -36,8 +36,18 @@ module "my_role_1" {
 
   name = "my_role_1"
 
-  principal = jsonencode({
-    "Service" : ["ec2.amazonaws.com", "lambda.amazonaws.com"]
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = ["ec2.amazonaws.com", "lambda.amazonaws.com"]
+        }
+      },
+    ]
   })
 
   # Aws Managed Policies
@@ -65,8 +75,18 @@ module "my_role_2" {
 
   name = "my_role_2"
 
-  principal = jsonencode({
-    "AWS" : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = ["ec2.amazonaws.com", "lambda.amazonaws.com"]
+        }
+      },
+    ]
   })
 
   # Aws Managed Policies
@@ -94,8 +114,18 @@ module "my_role_3" {
 
   name = "my_role_3"
 
-  principal = jsonencode({
-    "AWS" : data.aws_caller_identity.current.account_id
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          "AWS" : data.aws_caller_identity.current.account_id
+        }
+      },
+    ]
   })
 
   # Aws Managed Policies
@@ -124,8 +154,18 @@ module "my_role_4" {
 
   name = "my_role_4"
 
-  principal = jsonencode({
-    "Federated" : "cognito-identity.amazonaws.com"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          "Federated" : "cognito-identity.amazonaws.com"
+        }
+      },
+    ]
   })
 
   policy = jsonencode({

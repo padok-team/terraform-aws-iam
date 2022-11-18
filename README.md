@@ -56,8 +56,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_assume_role_policy"></a> [assume\_role\_policy](#input\_assume\_role\_policy) | n/a | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | The role to create | `string` | n/a | yes |
-| <a name="input_principal"></a> [principal](#input\_principal) | The principal to assume | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | A description for the role | `string` | `null` | no |
 | <a name="input_managed_policies"></a> [managed\_policies](#input\_managed\_policies) | List of the managed policies to attach to the role | `list(string)` | `[]` | no |
 | <a name="input_policy"></a> [policy](#input\_policy) | The policy to create | `string` | `null` | no |
