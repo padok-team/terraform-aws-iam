@@ -1,6 +1,13 @@
-variable "name" {
+variable "role_name" {
   description = "The role to create"
   type        = string
+  default     = null
+}
+
+variable "policy_name" {
+  description = "The role to create"
+  type        = string
+  default     = null
 }
 
 variable "description" {
@@ -28,5 +35,6 @@ variable "policy_description" {
 }
 
 variable "assume_role_policy" {
-  type = string
+  type    = string
+  default = null
 }
