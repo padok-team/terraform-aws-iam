@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "example" {
 module "my_role_with_oidc" {
   source = "../../"
 
-  name = "my_role_with_oidc"
+  role_name = "my_role_with_oidc"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -77,5 +77,5 @@ module "my_role_with_oidc" {
 }
 
 output "role_arn" {
-  value = module.my_role_with_oidc.this.arn
+  value = module.my_role_with_oidc.role[0].arn
 }

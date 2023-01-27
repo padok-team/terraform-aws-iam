@@ -29,29 +29,25 @@ locals {
   region = "eu-west-3"
 }
 
-module "my_role" {
+module "my_policy" {
   source = "../../"
 
-  role_name = "my_role"
+  policy_name = "my_policy"
 
-  assume_role_policy = jsonencode({
+  policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = {
-          Service = ["ec2.amazonaws.com", "lambda.amazonaws.com"]
-        }
+        Action = [
+          "ec2:Describe*",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
       },
     ]
   })
-
-  # Aws Managed Policies
-  managed_policies = ["AmazonS3FullAccess"]
 }
 
-output "role_arn" {
-  value = module.my_role.role[0].arn
+output "policy_arn" {
+  value = module.my_policy.policy[0].arn
 }

@@ -34,7 +34,7 @@ data "aws_caller_identity" "current" {}
 module "my_role_1" {
   source = "../../"
 
-  name = "my_role_1"
+  role_name = "my_role_1"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -68,12 +68,12 @@ module "my_role_1" {
 }
 
 output "role_arn_1" {
-  value = module.my_role_1.this.arn
+  value = module.my_role_1.role[0].arn
 }
 module "my_role_2" {
   source = "../../"
 
-  name = "my_role_2"
+  role_name = "my_role_2"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -107,12 +107,12 @@ module "my_role_2" {
 }
 
 output "role_arn_2" {
-  value = module.my_role_2.this.arn
+  value = module.my_role_2.role[0].arn
 }
 module "my_role_3" {
   source = "../../"
 
-  name = "my_role_3"
+  role_name = "my_role_3"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -146,13 +146,13 @@ module "my_role_3" {
 }
 
 output "role_arn_3" {
-  value = module.my_role_3.this.arn
+  value = module.my_role_3.role[0].arn
 }
 
 module "my_role_4" {
   source = "../../"
 
-  name = "my_role_4"
+  role_name = "my_role_4"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -183,5 +183,5 @@ module "my_role_4" {
 }
 
 output "role_arn_4" {
-  value = module.my_role_4.this.arn
+  value = module.my_role_4.role[0].arn
 }

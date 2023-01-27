@@ -1,3 +1,5 @@
+
+
 terraform {
   required_version = ">= 1.0.0"
 
@@ -32,7 +34,7 @@ locals {
 module "my_role" {
   source = "../../"
 
-  name = "my_role"
+  role_name = "my_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -66,13 +68,13 @@ module "my_role" {
 }
 
 output "role_arn" {
-  value = module.my_role.this.arn
+  value = module.my_role.role[0].arn
 }
 
 module "another_role" {
   source = "../../"
 
-  name        = "another_role"
+  role_name   = "another_role"
   description = "This role allow someone to do something"
 
   assume_role_policy = jsonencode({
@@ -108,5 +110,5 @@ module "another_role" {
 }
 
 output "another_role" {
-  value = module.another_role.this.arn
+  value = module.another_role.role[0].arn
 }
