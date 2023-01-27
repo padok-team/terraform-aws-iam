@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://github.com/padok-team/terraform-aws-iam/compare/v0.4.0...v0.5.0) (2023-01-27)
+
+
+### Features
+
+* create only policies ([987954a](https://github.com/padok-team/terraform-aws-iam/commit/987954a83bdf58bff47654b9cc839fe0d4a5f380))
+* update examples ([f27628f](https://github.com/padok-team/terraform-aws-iam/commit/f27628fc7c82bbd22fce463113ebe7f88687114a))
+
 ## [0.4.0](https://github.com/padok-team/terraform-aws-iam/compare/v0.3.0...v0.4.0) (2022-11-18)
 
 
