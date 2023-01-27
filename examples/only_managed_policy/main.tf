@@ -32,7 +32,7 @@ locals {
 module "my_role" {
   source = "../../"
 
-  name = "my_role"
+  role_name = "my_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -53,5 +53,5 @@ module "my_role" {
 }
 
 output "role_arn" {
-  value = module.my_role.this.arn
+  value = module.my_role.role[0].arn
 }
